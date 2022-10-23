@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PokemonResponse } from "../../App";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import TextField from "@mui/material/TextField";
+import { capitalize } from "../../utils";
 
 interface Props {
   pokemon: PokemonResponse;
@@ -13,24 +20,53 @@ const PokemonList = ({ pokemon }: Props) => {
   );
 
   return (
-    <div className="app">
-      <>
-        <input type="text" onChange={(e) => setSearch(e.target.value)} />
-
-        {search && <p>Search: {search}</p>}
-        {pokemonList.map(({ url, name }) => {
-          if (name.includes(search)) {
-            return (
-              <ul key={`pokemon-${name}`} className="list-unstyled">
-                <li>
-                  <Link to={`/pokemon/${name}`}>{name}</Link>
-                </li>
-              </ul>
-            );
-          }
-        })}
-      </>
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          padding: "1rem",
+        }}
+      >
+        <TextField
+          id="search"
+          label="Search&hellip;"
+          variant="outlined"
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{
+            margin: "none",
+          }}
+          fullWidth
+        />
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          padding: "0 0 0 0",
+          bgcolor: "background.paper",
+        }}
+      >
+        <div className="app">
+          {search && (
+            <p className="search-term">
+              Search: <strong>{search}</strong>
+            </p>
+          )}
+          {pokemonList.map(({ url, name }) => {
+            if (name.includes(search)) {
+              return (
+                <List key={`pokemon-${name}`}>
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <Link to={`/pokemon/${name}`}>{capitalize(name)}</Link>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              );
+            }
+          })}
+        </div>
+      </Box>
+    </Container>
   );
 };
 

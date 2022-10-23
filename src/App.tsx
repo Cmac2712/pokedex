@@ -13,6 +13,12 @@ type PokemonStat = {
   };
 };
 
+type PokemonMove = {
+  move: {
+    name: string;
+  };
+};
+
 type PokemonAbility = {
   ability: {
     name: string;
@@ -28,8 +34,12 @@ export interface Pokemon {
   sprites: {
     front_default: string;
   };
+  species: {
+    name: string;
+  };
   stats: PokemonStat[];
   abilities: PokemonAbility[];
+  moves: PokemonMove[];
 }
 
 export interface PokemonResponse {
@@ -49,6 +59,7 @@ function App() {
         "https://pokeapi.co/api/v2/pokemon?limit=1154"
       );
       const data = await response.json();
+
       setPokemon(data);
     };
 
@@ -57,6 +68,7 @@ function App() {
 
   return (
     <Router>
+      <h1>Pokedex</h1>
       <Routes>
         {pokemon && (
           <>
